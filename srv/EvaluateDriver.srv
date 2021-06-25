@@ -1,0 +1,8 @@
+int64 maxtime
+---
+float64 time
+float64 dist2go
+float64 averageDistance
+float64 boxDistance
+float64 damage
+float64 energy
