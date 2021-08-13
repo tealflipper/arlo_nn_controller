@@ -34,6 +34,7 @@ SimulationController::SimulationController(double maxSTime, int tRate) :
    sonar_r_sub_ = nh_.subscribe("arlo/laser/scan_right", 1000, &SimulationController::checkSonarRightValues, this);
    //actuatorValues_sub = nh_.subscribe("gp_test",1000,&SimulationController::actuatorCallback, this);
 	service = nh_.advertiseService("evaluate_driver", &SimulationController::evaluateDriver, this);
+   actuatorClient = nh_.serviceClient<arlo_gp_controller::EvaluateTree>("evaluate_tree");
 }
 
 void SimulationController::actuatorCallback(const std_msgs::Float32MultiArray::ConstPtr& array)
@@ -68,7 +69,7 @@ bool SimulationController::evaluateDriver(arlo_nn_controller::EvaluateDriver::Re
 {
    //TODO: Revisar que Gazebo este corriendo
 
-   startSimulation(req.maxtime);
+   startSimulation(req.maxtime, req.treeIndex);
 
 	res.time = arloState.finishTime;
    res.dist2go = arloState.distanceToGo;
@@ -84,7 +85,7 @@ bool SimulationController::evaluateDriver(arlo_nn_controller::EvaluateDriver::Re
 }
 
 
-SimulationState SimulationController::startSimulation(int maxtime)
+SimulationState SimulationController::startSimulation(int maxtime, int treeIndex)
 {
    //string pesos(req.weightsfile);
    //aDriver->setParameters(pesos.c_str());
@@ -107,7 +108,13 @@ SimulationState SimulationController::startSimulation(int maxtime)
 	{
 		
 		// Send sensor values to the driver and get its answer to move the robot.
-      
+      arlo_gp_controller::EvaluateTree srv;
+      //load sensorvalues to srv request array
+      for (int i = 0; i < 32; i ++){
+         srv.request.sensorValues[i] = sensorValues[i];
+      }
+      srv.request.treeIndex = treeIndex;
+      actuatorClient.call(srv);
 		//aDriver->driveArlo(sensorValues, actuatorValues);
       cout << "lineal= " << actuatorValues[0]
           << ", angular= " << actuatorValues[1] << "\n" << endl;

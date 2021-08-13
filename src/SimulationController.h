@@ -18,6 +18,7 @@
 #include <sensor_msgs/LaserScan.h>
 #include <std_srvs/Empty.h>
 #include "arlo_nn_controller/EvaluateDriver.h"
+#include "arlo_gp_controller/EvaluateTree.h"
 #include <string>
 #include "std_msgs/Float32MultiArray.h"
 #include <iostream>
@@ -34,7 +35,7 @@ public:
 	SimulationController(double maxSTime = 300, int tRate = 1);
 	virtual ~SimulationController();
 	void setDriver(ArloDriver* driver);
-	SimulationState startSimulation(int maxtime);
+	SimulationState startSimulation(int maxtime, int treeIndex);
 	SimulationState startSimulation(ArloDriver* driver, int maxtime);
 	void checkSonarLeftValues(const sensor_msgs::LaserScan::ConstPtr& msg);
    void checkSonarCenterValues(const sensor_msgs::LaserScan::ConstPtr& msg);
@@ -75,6 +76,7 @@ private:
   ros::Subscriber sonar_r_sub_;
 	ros::Subscriber actuatorValues_sub;
 	ros::ServiceServer service;
+	ros::ServiceClient actuatorClient;
 	vector<double> actuatorValues;
 	vector<double> sensorValues;
 	//double currentTime;
