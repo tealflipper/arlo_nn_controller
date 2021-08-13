@@ -114,7 +114,20 @@ SimulationState SimulationController::startSimulation(int maxtime, int treeIndex
          srv.request.sensorValues[i] = sensorValues[i];
       }
       srv.request.treeIndex = treeIndex;
-      actuatorClient.call(srv);
+      
+
+      if (actuatorClient.call(srv))
+      {
+         actuatorValues[0]=srv.response.actuatorValues[0];
+         actuatorValues[1]=srv.response.actuatorValues[1];
+      }
+      else
+      {
+         ROS_ERROR("Failed to call service add_two_ints");
+         return 1;
+      }
+
+
 		//aDriver->driveArlo(sensorValues, actuatorValues);
       cout << "lineal= " << actuatorValues[0]
           << ", angular= " << actuatorValues[1] << "\n" << endl;
