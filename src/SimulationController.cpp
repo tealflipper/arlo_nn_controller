@@ -129,11 +129,9 @@ SimulationState SimulationController::startSimulation(int maxtime, int treeIndex
 
 
 		//aDriver->driveArlo(sensorValues, actuatorValues);
-      cout << "lineal= " << actuatorValues[0]
-          << ", angular= " << actuatorValues[1] << "\n" << endl;
+      // cout << "lineal= " << actuatorValues[0]
+      //     << ", angular= " << actuatorValues[1] << "\n" << endl;
       //publish sensorValues
-			
-
 		linear_  = actuatorValues[0];
 		angular_ = actuatorValues[1];
 
@@ -170,10 +168,10 @@ SimulationState SimulationController::startSimulation(int maxtime, int treeIndex
    cout << "d2Go= " << arloState.distanceToGo << endl;
    cout << "gas= " << arloState.distanceTravelled << endl;
 
-//	res.time = arloState.finishTime;
-//   res.dist2go = arloState.distanceToGo;
-//	res.damage = arloState.robotDamage ;
-//	res.energy = arloState.distanceTravelled;
+	// res.time = arloState.finishTime;
+   // res.dist2go = arloState.distanceToGo;
+	// res.damage = arloState.robotDamage ;
+	// res.energy = arloState.distanceTravelled;
 
    ros::service::call("/gazebo/reset_simulation", gazeboParams);
 	std::cout << "Bye" << std::endl;
