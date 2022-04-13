@@ -280,20 +280,20 @@ void SimulationController::checkSonarRightValues(const sensor_msgs::LaserScan::C
 		sensorValues[i + 2*NUM_RAYS] = msg->ranges[i]; // 2 para el sensor der.
 	}
 }
-
+//calculate distance to target
 double SimulationController::dist2Go(double x, double y) {
    double distToGo;
-   if ( y < 0.8 && x < 4.7) { // Va en la primera recta
+   if ( y > -0.8 && x < 5.0) { // Va en la primera recta
          distToGo = 18 - x;
    }
-   else if (y < 6.61) {  // Va en la segunda recta
+   else if (y > -6.61) {  // Va en la segunda recta
       distToGo = 18 - (5.25 + y);
    }
    else {   // Va en la recta final
       if (x > 0.0)
          distToGo = x;
       else
-         distToGo = 0.0;
+         distToGo = 0.0; //llego a la meta
    }
    return distToGo;
 }
