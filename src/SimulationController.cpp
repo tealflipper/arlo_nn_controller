@@ -283,7 +283,7 @@ void SimulationController::checkSonarRightValues(const sensor_msgs::LaserScan::C
 //calculate distance to target
 double SimulationController::dist2Go(double x, double y) {
    double distToGo;
-   int trackLength = 13
+   int trackLength = 13;
    if ( y < 0.8 && x < 3.0) { // Va en la primera recta
          distToGo = trackLength - x;
    }
